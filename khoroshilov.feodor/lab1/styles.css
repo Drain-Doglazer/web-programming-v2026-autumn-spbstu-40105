@@ -34,9 +34,8 @@
 
 .absolute-image {
   position: absolute;
-  top: 35%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  top: 0;
+  right: 0;
 }
 
 .absolute-text {
