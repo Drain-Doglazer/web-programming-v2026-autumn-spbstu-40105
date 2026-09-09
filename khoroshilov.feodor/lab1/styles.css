@@ -32,16 +32,33 @@
   gap: 20px;
 }
 
-.abs-image {
+.absolute-image {
   position: absolute;
-  top: 40%;
+  top: 35%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 
-.abs-text {
+.absolute-text {
   position: absolute;
-  top: 60%;
+  top: 65%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.wrap-container {
+  height: auto;
+  min-height: 300px;
+  overflow: hidden;
+}
+
+.float-image {
+  float: right;
+  margin: 0 0 15px 15px;
+}
+
+.wrap-text {
+  text-align: justify;
+  margin: 0;
+  font-size: 16px;
 }
