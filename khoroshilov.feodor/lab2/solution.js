@@ -15,10 +15,14 @@ function getPluralForm (number, titles) {
 }
 
 function getTimeAgo (pastDate, nowDate) {
-  let diffSec = Math.floor ((nowDate - pastDate) / 1000);
+  const diffSec = Math.floor ((nowDate - pastDate) / 1000);
 
-  if (diffSec < 0) return 'дата в будущем';
-  if (diffSec < 5) return 'только что';
+  if (diffSec < 0) {
+    return 'дата в будущем';
+  }
+  if (diffSec < 5) {
+    return 'только что';
+  }
 
   const minutes = Math.floor (diffSec / 60);
   const hours = Math.floor (diffSec / 3600);
