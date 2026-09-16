@@ -1,6 +1,6 @@
 'use strict';
 
-export function moveZerosToEnd (arr) {
+export function moveZerosToEnd(arr) {
   let writeIndex = 0;
 
   for (let i = 0; i < arr.length; i++) {
