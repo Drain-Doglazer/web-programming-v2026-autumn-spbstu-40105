@@ -32,22 +32,34 @@ export class Travel {
   }
 }
 
+function getTravelCount (travel) {
+  if (typeof travel.visitedCount === 'number') {
+    return travel.visitedCount;
+  }
+  return Array.isArray (travel.visitedCountries)
+    ? travel.visitedCountries.length
+    : 0;
+}
+
 export function groupTravelsByCountryCount (travels) {
-  return travels.reduce ((acc, travel) => {
-    const count = travel.visitedCount;
-    if (!acc[count]) {
-      acc[count] = [];
+  const result = {};
+  for (const travel of travels) {
+    const count = getTravelCount (travel);
+    if (!result[count]) {
+      result[count] = [];
     }
-    acc[count].push (travel);
-    return acc;
-  }, {});
+    result[count].push (travel);
+  }
+  return result;
 }
 
 export function getAllUniqueCountries (travels) {
   const countries = new Set ();
   for (const travel of travels) {
-    for (const country of travel.visitedCountries) {
-      countries.add (country);
+    if (Array.isArray (travel.visitedCountries)) {
+      for (const country of travel.visitedCountries) {
+        countries.add (country);
+      }
     }
   }
   return Array.from (countries).sort ();
@@ -55,26 +67,30 @@ export function getAllUniqueCountries (travels) {
 
 export function filterByCountry (travels, country) {
   const target = String (country).trim ().toLowerCase ();
-  return travels.filter (travel =>
-    travel.visitedCountries.some (c => c.toLowerCase () === target)
+  return travels.filter (
+    travel =>
+      Array.isArray (travel.visitedCountries) &&
+      travel.visitedCountries.some (c => String (c).toLowerCase () === target)
   );
 }
 
 export function groupTravelersByCountry (travels) {
   const result = {};
   for (const travel of travels) {
-    for (const country of travel.visitedCountries) {
-      if (!result[country]) {
-        result[country] = [];
+    if (Array.isArray (travel.visitedCountries)) {
+      for (const country of travel.visitedCountries) {
+        if (!result[country]) {
+          result[country] = [];
+        }
+        result[country].push (travel);
       }
-      result[country].push (travel);
     }
   }
   return result;
 }
 
 export function getMoreThanN (travels, n) {
-  return travels.filter (travel => travel.visitedCount > n);
+  return travels.filter (travel => getTravelCount (travel) > n);
 }
 
 export function saveToStorage (travels) {
