@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Путешествия — Задача 4</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>🌍 Путешествия</h1>
+
+      <!-- ===== ФОРМЫ ===== -->
+      <div class="forms-section">
+        <div class="form-card">
+          <h2>➕ Создать путешествие</h2>
+          <label for="input-id">ID (число)</label>
+          <input
+            type="number"
+            id="input-id"
+            placeholder="Например: 1"
+            min="1"
+          />
+          <label for="input-name">Имя путешественника</label>
+          <input type="text" id="input-name" placeholder="Например: Иван" />
+          <button class="btn btn-primary" id="btn-add-travel">
+            Добавить путешествие
+          </button>
+        </div>
+
+        <div class="form-card">
+          <h2>🏳️ Добавить страну</h2>
+          <label for="select-travel-for-country"
+            >Выберите путешественника</label
+          >
+          <select id="select-travel-for-country">
+            <option value="">— выберите —</option>
+          </select>
+          <label for="input-country">Название страны</label>
+          <input
+            type="text"
+            id="input-country"
+            placeholder="Например: Франция"
+          />
+          <button class="btn btn-success" id="btn-add-country">
+            Добавить страну
+          </button>
+        </div>
+      </div>
+
+      <h2>📋 Карточки путешествий</h2>
+      <div class="cards-grid" id="cards-container">
+        <div class="empty-state">
+          <div class="icon">🧳</div>
+          <p>Пока нет путешествий. Создайте первое!</p>
+        </div>
+      </div>
+
+      <div class="analytics-section">
+        <div class="analytics-grid">
+          <div class="analytics-block">
+            <h3>Группировка по кол-ву стран</h3>
+            <pre id="analytics-group-by-count">—</pre>
+          </div>
+
+          <div class="analytics-block">
+            <h3>Все уникальные страны</h3>
+            <pre id="analytics-unique-countries">—</pre>
+          </div>
+
+          <div class="analytics-block">
+            <h3>Путешествия с заданной страной</h3>
+            <div class="filter-row">
+              <input
+                type="text"
+                id="filter-country-input"
+                placeholder="Введите страну"
+              />
+              <button class="btn btn-warning" id="btn-filter-country">
+                Найти
+              </button>
+            </div>
+            <pre id="analytics-filter-by-country">—</pre>
+          </div>
+
+          <div class="analytics-block">
+            <h3>Путешественники по странам</h3>
+            <pre id="analytics-group-by-country">—</pre>
+          </div>
+
+          <div class="analytics-block">
+            <h3>Посетили более N стран</h3>
+            <div class="filter-row">
+              <input
+                type="number"
+                id="filter-n-input"
+                placeholder="N"
+                min="0"
+                value="2"
+              />
+              <button class="btn btn-warning" id="btn-filter-n">Найти</button>
+            </div>
+            <pre id="analytics-more-than-n">—</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- Скрипты: модель сначала, потом логика UI -->
+    <script src="model.js"></script>
+    <script src="main.js"></script>
+  </body>
+</html>
