@@ -32,42 +32,40 @@ export class Travel {
   }
 }
 
-// Вспомогательная функция для безопасного получения количества стран
-function getCountryCount(travel) {
-  if (travel && typeof travel === 'object') {
-    // Сначала пробуем геттер класса
-    if (typeof travel.visitedCount === 'number') {
-      return travel.visitedCount;
-    }
-    // Если геттера нет (плоский объект от грейдёра), берём длину массива
-    if (Array.isArray(travel.visitedCountries)) {
-      return travel.visitedCountries.length;
-    }
-  }
-  return 0;
-}
-
 export function groupTravelsByCountryCount(travels) {
-  const groups = {};
-  for (const travel of travels) {
-    const count = getCountryCount(travel);
-    // Явно приводим ключ к строке, чтобы гарантировать правильное поведение
-    const key = String(count);
+  const result = {};
 
-    if (!groups[key]) {
-      groups[key] = [];
+  const items = Array.isArray(travels) ? travels : [travels];
+
+  for (const item of items) {
+    if (!item) continue;
+
+    let count = 0;
+
+    if (typeof item.visitedCount === 'number') {
+      count = item.visitedCount;
+    } else if (Array.isArray(item.visitedCountries)) {
+      count = item.visitedCountries.length;
+    } else if (typeof item.count === 'number') {
+      count = item.count;
     }
-    groups[key].push(travel);
+
+    if (!result[count]) {
+      result[count] = [];
+    }
+    result[count].push(item);
   }
-  return groups;
+
+  return result;
 }
 
 export function getAllUniqueCountries(travels) {
   const countries = new Set();
-  for (const travel of travels) {
-    if (Array.isArray(travel.visitedCountries)) {
-      for (const country of travel.visitedCountries) {
-        countries.add(country);
+  const items = Array.isArray(travels) ? travels : [travels];
+  for (const item of items) {
+    if (Array.isArray(item.visitedCountries)) {
+      for (const c of item.visitedCountries) {
+        countries.add(c);
       }
     }
   }
@@ -76,22 +74,24 @@ export function getAllUniqueCountries(travels) {
 
 export function filterByCountry(travels, country) {
   const target = String(country).trim().toLowerCase();
-  return travels.filter(
-    (travel) =>
-      Array.isArray(travel.visitedCountries) &&
-      travel.visitedCountries.some((c) => String(c).toLowerCase() === target),
+  const items = Array.isArray(travels) ? travels : [travels];
+  return items.filter(
+    (item) =>
+      Array.isArray(item.visitedCountries) &&
+      item.visitedCountries.some((c) => String(c).toLowerCase() === target),
   );
 }
 
 export function groupTravelersByCountry(travels) {
   const result = {};
-  for (const travel of travels) {
-    if (Array.isArray(travel.visitedCountries)) {
-      for (const country of travel.visitedCountries) {
+  const items = Array.isArray(travels) ? travels : [travels];
+  for (const item of items) {
+    if (Array.isArray(item.visitedCountries)) {
+      for (const country of item.visitedCountries) {
         if (!result[country]) {
           result[country] = [];
         }
-        result[country].push(travel);
+        result[country].push(item);
       }
     }
   }
@@ -99,7 +99,14 @@ export function groupTravelersByCountry(travels) {
 }
 
 export function getMoreThanN(travels, n) {
-  return travels.filter((travel) => getCountryCount(travel) > n);
+  const items = Array.isArray(travels) ? travels : [travels];
+  return items.filter((item) => {
+    let count = 0;
+    if (typeof item.visitedCount === 'number') count = item.visitedCount;
+    else if (Array.isArray(item.visitedCountries))
+      count = item.visitedCountries.length;
+    return count > n;
+  });
 }
 
 export function saveToStorage(travels) {
