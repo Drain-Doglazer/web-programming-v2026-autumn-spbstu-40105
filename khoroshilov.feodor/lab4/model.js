@@ -62,7 +62,7 @@ export function groupTravelsByCountryCount(travels) {
   return result;
 }
 
-export function getAllUniqueCountries(travels) {
+export function getUniqueCountries(travels) {
   const countries = new Set();
   const items = Array.isArray(travels) ? travels : [travels];
 
