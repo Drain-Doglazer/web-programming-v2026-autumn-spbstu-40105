@@ -82,7 +82,7 @@ export function getUniqueCountries(travels) {
   return Array.from(countries).sort();
 }
 
-export function filterByCountry(travels, country) {
+export function findTravelsByCountry(travels, country) {
   const target = String(country).trim().toLowerCase();
   const items = Array.isArray(travels) ? travels : [travels];
 
