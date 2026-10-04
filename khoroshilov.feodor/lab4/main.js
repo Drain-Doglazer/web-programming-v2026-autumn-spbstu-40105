@@ -9,7 +9,9 @@ const travels = loadFromStorage ();
 
 function renderList () {
   const listElement = document.getElementById ('entity-list');
-  if (!listElement) return;
+  if (!listElement) {
+    return;
+  }
 
   listElement.innerHTML = '';
 
