@@ -33,7 +33,7 @@ export class Travel {
 }
 
 export function groupTravelsByCountryCount(travels) {
-  const result = {};
+  const result = new Map();
   const items = Array.isArray(travels) ? travels : [travels];
 
   for (const item of items) {
@@ -53,10 +53,10 @@ export function groupTravelsByCountryCount(travels) {
       count = item.count;
     }
 
-    if (!result[count]) {
-      result[count] = [];
+    if (!result.has(count)) {
+      result.set(count, []);
     }
-    result[count].push(item);
+    result.get(count).push(item);
   }
 
   return result;
@@ -99,26 +99,26 @@ export function filterByCountry(travels, country) {
 }
 
 export function groupTravelersByCountry(travels) {
-  const result = {};
+  const result = new Map();
   const items = Array.isArray(travels) ? travels : [travels];
 
   for (const item of items) {
     if (Array.isArray(item.visitedCountries)) {
       for (const country of item.visitedCountries) {
-        if (!result[country]) {
-          result[country] = [];
+        if (!result.has(country)) {
+          result.set(country, []);
         }
-        result[country].push(item);
+        result.get(country).push(item);
       }
     } else if (
       typeof item.visitedCountries === 'string' &&
       item.visitedCountries.trim()
     ) {
       const country = item.visitedCountries;
-      if (!result[country]) {
-        result[country] = [];
+      if (!result.has(country)) {
+        result.set(country, []);
       }
-      result[country].push(item);
+      result.get(country).push(item);
     }
   }
 
