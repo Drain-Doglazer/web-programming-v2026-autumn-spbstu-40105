@@ -125,7 +125,7 @@ export function groupTravelersByCountry(travels) {
   return result;
 }
 
-export function getMoreThanN(travels, n) {
+export function findTravelsAboveCountryCount(travels, n) {
   const items = Array.isArray(travels) ? travels : [travels];
 
   return items.filter((item) => {
