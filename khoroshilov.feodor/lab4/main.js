@@ -5,15 +5,18 @@ import {
   saveToStorage,
 } from './model.js';
 
-let travels = loadFromStorage ();
+const travels = loadFromStorage ();
 
 function renderList () {
   const listElement = document.getElementById ('entity-list');
+  if (!listElement) return;
+
   listElement.innerHTML = '';
 
   for (const travel of travels) {
     const card = document.createElement ('div');
     card.className = 'travel-card';
+    card.dataset.testid = 'entity-card';
 
     const title = document.createElement ('h3');
     title.textContent = `${travel.travelerName} (ID: ${travel.id})`;
@@ -37,7 +40,7 @@ function renderList () {
     card.appendChild (count);
     card.appendChild (countries);
     card.appendChild (deleteBtn);
-    listElement.appendChild (card); // <-- Здесь теперь всё правильно
+    listElement.appendChild (card);
   }
 }
 
@@ -54,8 +57,10 @@ function handleAddTravel (event) {
     return;
   }
 
-  const btn = document.getElementById ('btn-add-travel');
-  btn.disabled = true;
+  const submitBtn = form.querySelector ('button[type="submit"]');
+  if (submitBtn) {
+    submitBtn.disabled = true;
+  }
 
   asyncOperation (() => {
     const exists = travels.some (item => item.id === id);
@@ -80,7 +85,9 @@ function handleAddTravel (event) {
       alert (error.message);
     })
     .finally (() => {
-      btn.disabled = false;
+      if (submitBtn) {
+        submitBtn.disabled = false;
+      }
     });
 }
 

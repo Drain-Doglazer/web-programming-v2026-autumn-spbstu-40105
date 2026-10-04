@@ -32,7 +32,7 @@ export class Travel {
   }
 }
 
-export function groupByVisitedCount (travels) {
+export function groupTravelsByCountryCount (travels) {
   return travels.reduce ((acc, travel) => {
     const count = travel.visitedCount;
     if (!acc[count]) {
@@ -92,6 +92,7 @@ export function loadFromStorage () {
       item => new Travel (item.id, item.travelerName, item.visitedCountries)
     );
   } catch (error) {
+    console.error ('Ошибка загрузки из localStorage:', error);
     return [];
   }
 }
