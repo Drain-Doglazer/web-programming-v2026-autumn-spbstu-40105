@@ -34,11 +34,12 @@ export class Travel {
 
 export function groupTravelsByCountryCount(travels) {
   const result = {};
-
   const items = Array.isArray(travels) ? travels : [travels];
 
   for (const item of items) {
-    if (!item) continue;
+    if (!item) {
+      continue;
+    }
 
     let count = 0;
 
@@ -46,6 +47,8 @@ export function groupTravelsByCountryCount(travels) {
       count = item.visitedCount;
     } else if (Array.isArray(item.visitedCountries)) {
       count = item.visitedCountries.length;
+    } else if (typeof item.visitedCountries === 'string') {
+      count = item.visitedCountries.trim() ? 1 : 0;
     } else if (typeof item.count === 'number') {
       count = item.count;
     }
@@ -62,29 +65,43 @@ export function groupTravelsByCountryCount(travels) {
 export function getAllUniqueCountries(travels) {
   const countries = new Set();
   const items = Array.isArray(travels) ? travels : [travels];
+
   for (const item of items) {
     if (Array.isArray(item.visitedCountries)) {
       for (const c of item.visitedCountries) {
         countries.add(c);
       }
+    } else if (
+      typeof item.visitedCountries === 'string' &&
+      item.visitedCountries.trim()
+    ) {
+      countries.add(item.visitedCountries);
     }
   }
+
   return Array.from(countries).sort();
 }
 
 export function filterByCountry(travels, country) {
   const target = String(country).trim().toLowerCase();
   const items = Array.isArray(travels) ? travels : [travels];
-  return items.filter(
-    (item) =>
-      Array.isArray(item.visitedCountries) &&
-      item.visitedCountries.some((c) => String(c).toLowerCase() === target),
-  );
+
+  return items.filter((item) => {
+    if (Array.isArray(item.visitedCountries)) {
+      return item.visitedCountries.some(
+        (c) => String(c).toLowerCase() === target,
+      );
+    } else if (typeof item.visitedCountries === 'string') {
+      return item.visitedCountries.toLowerCase() === target;
+    }
+    return false;
+  });
 }
 
 export function groupTravelersByCountry(travels) {
   const result = {};
   const items = Array.isArray(travels) ? travels : [travels];
+
   for (const item of items) {
     if (Array.isArray(item.visitedCountries)) {
       for (const country of item.visitedCountries) {
@@ -93,18 +110,37 @@ export function groupTravelersByCountry(travels) {
         }
         result[country].push(item);
       }
+    } else if (
+      typeof item.visitedCountries === 'string' &&
+      item.visitedCountries.trim()
+    ) {
+      const country = item.visitedCountries;
+      if (!result[country]) {
+        result[country] = [];
+      }
+      result[country].push(item);
     }
   }
+
   return result;
 }
 
 export function getMoreThanN(travels, n) {
   const items = Array.isArray(travels) ? travels : [travels];
+
   return items.filter((item) => {
     let count = 0;
-    if (typeof item.visitedCount === 'number') count = item.visitedCount;
-    else if (Array.isArray(item.visitedCountries))
+
+    if (typeof item.visitedCount === 'number') {
+      count = item.visitedCount;
+    } else if (Array.isArray(item.visitedCountries)) {
       count = item.visitedCountries.length;
+    } else if (typeof item.visitedCountries === 'string') {
+      count = item.visitedCountries.trim() ? 1 : 0;
+    } else if (typeof item.count === 'number') {
+      count = item.count;
+    }
+
     return count > n;
   });
 }
