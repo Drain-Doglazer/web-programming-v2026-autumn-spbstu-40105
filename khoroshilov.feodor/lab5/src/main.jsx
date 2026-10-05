@@ -112,7 +112,10 @@ function NoteForm({onSave, editingNote, onCancelEdit}) {
       />
 
       <div className="form-buttons">
-        <button type="submit" data-testid="note-submit">
+        <button
+          type="submit"
+          data-testid={editingNote ? 'note-save' : 'note-add'}
+        >
           {editingNote ? 'Сохранить' : 'Добавить'}
         </button>
         {editingNote && (
