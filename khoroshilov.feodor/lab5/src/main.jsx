@@ -20,6 +20,7 @@ function FilterPanel({
         placeholder="Поиск по тексту..."
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
+        data-testid="note-search"
       />
 
       <label>Группа (Тег):</label>
