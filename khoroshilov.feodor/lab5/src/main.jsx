@@ -180,20 +180,22 @@ function NoteCard({note, onDelete, onEdit}) {
 }
 
 function NoteList({notes, onDelete, onEdit}) {
-  if (notes.length === 0) {
-    return <p className="empty">Заметки не найдены. Создайте первую!</p>;
-  }
-
   return (
-    <div className="notes-grid" data-testid="notes-list">
-      {notes.map((note) => (
-        <NoteCard
-          key={note.id}
-          note={note}
-          onDelete={onDelete}
-          onEdit={onEdit}
-        />
-      ))}
+    <div data-testid="note-list">
+      {notes.length === 0 ? (
+        <p className="empty">Заметки не найдены. Создайте первую!</p>
+      ) : (
+        <div className="notes-grid">
+          {notes.map((note) => (
+            <NoteCard
+              key={note.id}
+              note={note}
+              onDelete={onDelete}
+              onEdit={onEdit}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
