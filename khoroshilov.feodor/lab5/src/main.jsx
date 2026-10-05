@@ -27,6 +27,7 @@ function FilterPanel({
       <select
         value={selectedTag}
         onChange={(e) => setSelectedTag(e.target.value)}
+        data-testid="note-tag-filter"
       >
         <option value="all">Все группы</option>
         {allTags.map((tag) => (
@@ -40,6 +41,7 @@ function FilterPanel({
       <select
         value={dateFilter}
         onChange={(e) => setDateFilter(e.target.value)}
+        data-testid="note-date-filter"
       >
         <option value="all">Все время</option>
         <option value="today">Сегодня</option>
@@ -120,7 +122,12 @@ function NoteForm({onSave, editingNote, onCancelEdit}) {
           {editingNote ? 'Сохранить' : 'Добавить'}
         </button>
         {editingNote && (
-          <button type="button" onClick={onCancelEdit} className="btn-cancel">
+          <button
+            type="button"
+            onClick={onCancelEdit}
+            className="btn-cancel"
+            data-testid="note-cancel"
+          >
             Отмена
           </button>
         )}
@@ -138,7 +145,7 @@ function NoteCard({note, onDelete, onEdit}) {
   });
 
   return (
-    <div className="note-card">
+    <div className="note-card" data-testid="note-item">
       <h4 data-testid="note-title">{note.title}</h4>
       <p>{note.content}</p>
 
@@ -153,10 +160,18 @@ function NoteCard({note, onDelete, onEdit}) {
       <div className="date">{formattedDate}</div>
 
       <div className="card-buttons">
-        <button onClick={() => onEdit(note)} className="btn-edit">
+        <button
+          onClick={() => onEdit(note)}
+          className="btn-edit"
+          data-testid="note-edit"
+        >
           Изм.
         </button>
-        <button onClick={() => onDelete(note.id)} className="btn-delete">
+        <button
+          onClick={() => onDelete(note.id)}
+          className="btn-delete"
+          data-testid="note-delete"
+        >
           Удал.
         </button>
       </div>
@@ -170,7 +185,7 @@ function NoteList({notes, onDelete, onEdit}) {
   }
 
   return (
-    <div className="notes-grid">
+    <div className="notes-grid" data-testid="notes-list">
       {notes.map((note) => (
         <NoteCard
           key={note.id}
@@ -184,22 +199,7 @@ function NoteList({notes, onDelete, onEdit}) {
 }
 
 function App() {
-  const [notes, setNotes] = useState([
-    {
-      id: 1,
-      title: 'Изучить React',
-      content: 'Прочитать про хуки и компоненты.',
-      tags: ['учеба', 'код'],
-      createdAt: new Date().toISOString(),
-    },
-    {
-      id: 2,
-      title: 'Купить продукты',
-      content: 'Молоко, хлеб, яблоки.',
-      tags: ['дом', 'покупки'],
-      createdAt: new Date(Date.now() - 86400000).toISOString(),
-    },
-  ]);
+  const [notes, setNotes] = useState([]);
 
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTag, setSelectedTag] = useState('all');
