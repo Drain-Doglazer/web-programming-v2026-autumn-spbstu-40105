@@ -1,6 +1,6 @@
-import React, { useEffect, useMemo, useState } from "react";
-import ReactDOM from "react-dom/client";
-import "./styles.css";
+import React, {useEffect, useMemo, useState} from 'react';
+import ReactDOM from 'react-dom/client';
+import './styles.css';
 
 function FilterPanel({
   searchQuery,
@@ -48,48 +48,51 @@ function FilterPanel({
   );
 }
 
-function NoteForm({ onSave, editingNote, onCancelEdit }) {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [tagsInput, setTagsInput] = useState("");
+function NoteForm({onSave, editingNote, onCancelEdit}) {
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [tagsInput, setTagsInput] = useState('');
 
   useEffect(() => {
     if (editingNote) {
       setTitle(editingNote.title);
       setContent(editingNote.content);
-      setTagsInput(editingNote.tags.join(", "));
+      setTagsInput(editingNote.tags.join(', '));
     } else {
-      setTitle("");
-      setContent("");
-      setTagsInput("");
+      setTitle('');
+      setContent('');
+      setTagsInput('');
     }
   }, [editingNote]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!title.trim()) return;
+    if (!title.trim()) {
+      return;
+    }
 
     const tags = tagsInput
-      .split(",")
+      .split(',')
       .map((t) => t.trim().toLowerCase())
       .filter((t) => t);
-    onSave({ title, content, tags });
+    onSave({title, content, tags});
     if (!editingNote) {
-      setTitle("");
-      setContent("");
-      setTagsInput("");
+      setTitle('');
+      setContent('');
+      setTagsInput('');
     }
   };
 
   return (
     <form onSubmit={handleSubmit} className="note-form">
-      <h3>{editingNote ? "Редактировать" : "Новая заметка"}</h3>
+      <h3>{editingNote ? 'Редактировать' : 'Новая заметка'}</h3>
 
       <input
         type="text"
         placeholder="Заголовок"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
+        data-testid="note-title"
         required
       />
 
@@ -97,6 +100,7 @@ function NoteForm({ onSave, editingNote, onCancelEdit }) {
         placeholder="Текст заметки..."
         value={content}
         onChange={(e) => setContent(e.target.value)}
+        data-testid="note-content"
       />
 
       <input
@@ -104,10 +108,13 @@ function NoteForm({ onSave, editingNote, onCancelEdit }) {
         placeholder="Теги (через запятую)"
         value={tagsInput}
         onChange={(e) => setTagsInput(e.target.value)}
+        data-testid="note-tags"
       />
 
       <div className="form-buttons">
-        <button type="submit">{editingNote ? "Сохранить" : "Добавить"}</button>
+        <button type="submit" data-testid="note-submit">
+          {editingNote ? 'Сохранить' : 'Добавить'}
+        </button>
         {editingNote && (
           <button type="button" onClick={onCancelEdit} className="btn-cancel">
             Отмена
@@ -118,17 +125,17 @@ function NoteForm({ onSave, editingNote, onCancelEdit }) {
   );
 }
 
-function NoteCard({ note, onDelete, onEdit }) {
-  const formattedDate = new Date(note.createdAt).toLocaleDateString("ru-RU", {
-    day: "numeric",
-    month: "long",
-    hour: "2-digit",
-    minute: "2-digit",
+function NoteCard({note, onDelete, onEdit}) {
+  const formattedDate = new Date(note.createdAt).toLocaleDateString('ru-RU', {
+    day: 'numeric',
+    month: 'long',
+    hour: '2-digit',
+    minute: '2-digit',
   });
 
   return (
     <div className="note-card">
-      <h4>{note.title}</h4>
+      <h4 data-testid="note-title">{note.title}</h4>
       <p>{note.content}</p>
 
       <div className="tags">
@@ -153,7 +160,7 @@ function NoteCard({ note, onDelete, onEdit }) {
   );
 }
 
-function NoteList({ notes, onDelete, onEdit }) {
+function NoteList({notes, onDelete, onEdit}) {
   if (notes.length === 0) {
     return <p className="empty">Заметки не найдены. Создайте первую!</p>;
   }
@@ -176,23 +183,23 @@ function App() {
   const [notes, setNotes] = useState([
     {
       id: 1,
-      title: "Изучить React",
-      content: "Прочитать про хуки и компоненты.",
-      tags: ["учеба", "код"],
+      title: 'Изучить React',
+      content: 'Прочитать про хуки и компоненты.',
+      tags: ['учеба', 'код'],
       createdAt: new Date().toISOString(),
     },
     {
       id: 2,
-      title: "Купить продукты",
-      content: "Молоко, хлеб, яблоки.",
-      tags: ["дом", "покупки"],
+      title: 'Купить продукты',
+      content: 'Молоко, хлеб, яблоки.',
+      tags: ['дом', 'покупки'],
       createdAt: new Date(Date.now() - 86400000).toISOString(),
     },
   ]);
 
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedTag, setSelectedTag] = useState("all");
-  const [dateFilter, setDateFilter] = useState("all");
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedTag, setSelectedTag] = useState('all');
+  const [dateFilter, setDateFilter] = useState('all');
   const [editingNote, setEditingNote] = useState(null);
 
   const allTags = useMemo(() => {
@@ -208,15 +215,15 @@ function App() {
         note.content.toLowerCase().includes(searchQuery.toLowerCase());
 
       const matchesTag =
-        selectedTag === "all" || note.tags.includes(selectedTag);
+        selectedTag === 'all' || note.tags.includes(selectedTag);
 
       let matchesDate = true;
       const noteDate = new Date(note.createdAt);
       const now = new Date();
 
-      if (dateFilter === "today") {
+      if (dateFilter === 'today') {
         matchesDate = noteDate.toDateString() === now.toDateString();
-      } else if (dateFilter === "week") {
+      } else if (dateFilter === 'week') {
         const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
         matchesDate = noteDate >= weekAgo;
       }
@@ -250,14 +257,16 @@ function App() {
   };
 
   const handleDeleteNote = (id) => {
-    if (window.confirm("Удалить заметку?")) {
+    if (window.confirm('Удалить заметку?')) {
       setNotes(notes.filter((n) => n.id !== id));
-      if (editingNote?.id === id) setEditingNote(null);
+      if (editingNote?.id === id) {
+        setEditingNote(null);
+      }
     }
   };
 
   return (
-    <div className="app">
+    <div className="app" data-testid="app">
       <div className="sidebar">
         <FilterPanel
           searchQuery={searchQuery}
@@ -287,7 +296,7 @@ function App() {
   );
 }
 
-const rootElement = document.getElementById("root");
+const rootElement = document.getElementById('root');
 const root = ReactDOM.createRoot(rootElement);
 
 root.render(

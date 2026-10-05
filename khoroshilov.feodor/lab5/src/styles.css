@@ -6,7 +6,7 @@
 
 body {
   font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background-color: #f4f5f7;
 }
 
@@ -33,7 +33,7 @@ body {
   background: white;
   padding: 15px;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgb(0 0 0 / 0.1);
 }
 
 .filter-panel h3,
@@ -81,8 +81,8 @@ body {
   font-size: 14px;
 }
 
-.btn-cancel {
-  background: #6c757d !important;
+.form-buttons .btn-cancel {
+  background: #6c757d;
 }
 
 .notes-grid {
@@ -96,7 +96,7 @@ body {
   background: white;
   padding: 15px;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgb(0 0 0 / 0.1);
   display: flex;
   flex-direction: column;
 }
